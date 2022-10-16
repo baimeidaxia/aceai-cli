@@ -1,4 +1,4 @@
-use log::info;
+use log::{debug, info};
 use reqwest::blocking::Client;
 use serde::Deserialize;
 
@@ -44,6 +44,26 @@ pub fn update_weight_by(
         ))
         .send()?
         .text()?;
-    info!("update weight to {} resposne {:?}", weight, resp);
+    debug!(
+        "service {} update weight to {} resposne {:?}",
+        service_name, weight, resp
+    );
     Ok(())
+}
+
+pub fn is_exist_service_instance(
+    service_name: &String,
+    ip: &String,
+    port: i32,
+) -> Result<bool, Box<dyn std::error::Error>> {
+    let service = get_service_by(service_name)?;
+    if service.hosts.len() == 0 {
+        return Ok(false);
+    }
+    for ele in service.hosts {
+        if ele.ip == *ip && ele.port == port {
+            return Ok(true);
+        }
+    }
+    Ok(false)
 }
