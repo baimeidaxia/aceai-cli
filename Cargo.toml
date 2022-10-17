@@ -1,5 +1,5 @@
 [package]
-name = "aceai-dp-cli"
+name = "aceai-cli"
 version = "0.1.0"
 edition = "2021"
 
@@ -12,3 +12,4 @@ clap = { version = "4.0.15", features = ["cargo"] }
 reqwest = { git = "https://github.com/baimeidaxia/reqwest", version = "0.11.12", features = ["blocking", "json"] }
 serde = { version = "1.0.145", features = ["derive"] }
 ssh-rs = { version = "0.2.1" }
+serde_yaml = "0.8.26"

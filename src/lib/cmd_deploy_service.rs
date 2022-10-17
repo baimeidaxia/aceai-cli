@@ -4,7 +4,7 @@ use crate::lib::nacos_client;
 use clap::ArgMatches;
 use log::info;
 
-use super::{nacos_client::NacosInstanceHost, zuul_client, ssh_client};
+use super::{conf, nacos_client::NacosInstanceHost, ssh_client, zuul_client};
 
 pub fn handle(sub_matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>> {
     let service_name = sub_matches.get_one::<String>("service_name").unwrap();
@@ -12,24 +12,37 @@ pub fn handle(sub_matches: &ArgMatches) -> Result<(), Box<dyn std::error::Error>
     let service = nacos_client::get_service_by(&service_name);
     let hosts = service?.hosts;
     info!("service {} has {:?} instances", service_name, hosts.len());
-    handle_instances(&service_name, hosts);
+    let _ = handle_instances(&service_name, hosts);
     info!("service {} deploy finish", service_name);
     Ok(())
 }
 
-fn handle_instances(service_name: &String, hosts: Vec<NacosInstanceHost>) {
+fn handle_instances(
+    service_name: &String,
+    hosts: Vec<NacosInstanceHost>,
+) -> Result<(), serde_yaml::Error> {
     let mut idx = 1;
     let size = hosts.len() as i32;
+    let config = conf::load()?;
     for host in &hosts {
-        stat_instance(service_name, host, size, idx);
-        close_instance_flow(service_name, &host);
-        let _ = check_service_status_in_zuul(service_name, &host, String::from("down"));
-//        ssh_client::ssh(ip, account, password, cmd)
-        let _ = check_service_started_in_nacos(service_name, &host);
-        open_instance_flow(service_name, &host);
-        let _ = check_service_status_in_zuul(service_name, &host, String::from("up"));
+        let server = config.get_server_by(&host.ip);
+        info!("server {:?}", server);
+        ssh_client::findDockerComposeFiles(&server);
+        //        stat_instance(service_name, host, size, idx);
+        //        close_instance_flow(service_name, &host);
+        //        let _ = check_service_status_in_zuul(service_name, &host, String::from("down"));
+        //        ssh_client::ssh(
+        //            &server.ip,
+        //            &server.account,
+        //            &server.password,
+        //            &format!("docker restart {}", host.),
+        //        );
+        //        let _ = check_service_started_in_nacos(service_name, &host);
+        //        open_instance_flow(service_name, &host);
+        //        let _ = check_service_status_in_zuul(service_name, &host, String::from("up"));
         idx = idx + 1;
     }
+    Ok(())
 }
 
 fn stat_instance(service_name: &String, host: &NacosInstanceHost, instance_size: i32, idx: i32) {

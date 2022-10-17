@@ -1,0 +1,3 @@
+name: jxp
+servers:
+  - {ip: "192.168.0.102", account: "root", password: "123321", docker_compose_path: "/home/docker-compose"}

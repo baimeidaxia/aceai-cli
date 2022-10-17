@@ -7,9 +7,15 @@ pub fn init() -> Command {
         .author("baimeidaxia")
         .subcommand_required(true)
         .subcommand(
-            Command::new("dcs")
-                .about("deploy nacos service")
+            Command::new("dms")
+                .about("deploy micro service")
                 .arg(arg!(<service_name> "please input the micro service name in nacos"))
+                .arg_required_else_help(true),
+        )
+        .subcommand(
+            Command::new("dw")
+                .about("deploy website")
+                .arg(arg!(<website_name> "please input the website name"))
                 .arg_required_else_help(true),
         )
         .subcommand(
