@@ -60,6 +60,8 @@ pub fn fetch_docker_compose_content(server: &ConfigServer, file: &String) -> Str
 }
 
 fn run_shell(shell: &mut ChannelShell, cmd: &String, pb: &ProgressBar) -> Vec<String> {
+    sleep(Duration::from_millis(500));
+    
     let mut cmd_str = String::from(cmd);
     cmd_str.push_str("\n");
     shell.write(cmd_str.as_bytes()).unwrap();
