@@ -1,5 +1,6 @@
 pub mod cmd;
 pub mod cmd_deploy_service;
+pub mod cmd_deploy_web;
 pub mod cmd_ssh;
 pub mod conf;
 pub mod docker_compose_parser;

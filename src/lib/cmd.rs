@@ -13,7 +13,7 @@ pub fn init() -> Command {
                 .arg_required_else_help(true),
         )
         .subcommand(
-            Command::new("dw")
+            Command::new("dws")
                 .about("deploy website")
                 .arg(arg!(<website_name> "please input the website name"))
                 .arg_required_else_help(true),
