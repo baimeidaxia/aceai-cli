@@ -1,4 +1,7 @@
-use std::{thread, time::Duration};
+use std::{
+    thread::{self, sleep},
+    time::Duration,
+};
 
 use crate::lib::nacos_client;
 use clap::ArgMatches;
@@ -172,4 +175,6 @@ fn deploy_docker(
         "{:?}",
         resp.into_iter().filter(|x| x.contains("Container")).last()
     );
+
+    sleep(Duration::from_secs(5));
 }
