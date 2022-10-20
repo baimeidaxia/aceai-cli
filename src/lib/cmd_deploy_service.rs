@@ -108,8 +108,17 @@ fn check_service_status_in_zuul(
         i = i + 1;
     }
 
+    // 这段代码的作用主要是为了开启或者关闭流量后，Nacos通知各个服务更新本地缓存的一个缓冲时间，可根据实际情况设置
+    i = 0;
+    while i <= 5 {
+        pb.inc(1);
+        pb.set_message(format!("take a rest, a little bit safer {}s", i));
+        thread::sleep(Duration::from_secs(1));
+        sleep(Duration::from_secs(1));
+        i = i + 1;
+    }
+
     pb.finish_with_message("done");
-    sleep(Duration::from_secs(10));
 }
 
 fn check_service_started_in_nacos(
@@ -176,6 +185,4 @@ fn deploy_docker(
         "{:?}",
         resp.into_iter().filter(|x| x.contains("Container")).last()
     );
-
-    sleep(Duration::from_secs(5));
 }
