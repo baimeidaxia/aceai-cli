@@ -1,1 +1,1 @@
-[{"name":"sm-mes-canteen","yml":"service1.yml","ip":"192.168.0.102","port":9300},{"name":"sm-mes-canteen-2","yml":"service2.yml","ip":"192.168.0.102","port":9301}]
+[{"name":"gitea","yml":"gitea.yml","ip":"192.168.0.102","port":0},{"name":"sm-mes-canteen","yml":"service1.yml","ip":"192.168.0.102","port":9300},{"name":"sm-mes-canteen-2","yml":"service2.yml","ip":"192.168.0.102","port":9301}]

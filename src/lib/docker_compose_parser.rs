@@ -30,7 +30,7 @@ pub fn parse(
 ) -> Result<Vec<DockerComposeService>, serde_yaml::Error> {
     let node_indent_len = get_node_indent_len(content);
     let mut services = Vec::new();
-    let mut find_port = false;
+
     let mut name = String::from("");
     for line in content.lines() {
         let line_indent_len = get_indent_len(&line.to_string());
@@ -39,13 +39,21 @@ pub fn parse(
         }
         if line_indent_len == node_indent_len {
             debug!("find node line {}", line);
+            if name != "" {
+                debug!("maybe other container {}", name);
+                services.push(DockerComposeService::new(
+                    name,
+                    yml.to_string(),
+                    server.ip.to_string(),
+                    0,
+                ));
+            }
             name = line.replace(":", "").trim().to_string();
         }
-        if find_port {
-            let port_str = line.replace("-", "");
-            let port_vec: Vec<&str> = port_str.trim().split(":").collect();
-            debug!("port_port_vec {:?}", port_vec);
-            let port = port_vec[0].parse().unwrap();
+        if line.contains("SERVER_PORT") {
+            let port_str = line.replace("-", "").replace("SERVER_PORT=", "");
+            debug!("find port {:?}", port_str.trim());
+            let port = port_str.trim().parse().unwrap();
             debug!("{} {}", name, port);
             services.push(DockerComposeService::new(
                 name,
@@ -54,10 +62,6 @@ pub fn parse(
                 port,
             ));
             name = String::from("");
-            find_port = false;
-        }
-        if line.contains("ports:") {
-            find_port = true;
         }
     }
     Ok(services)
