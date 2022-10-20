@@ -109,6 +109,7 @@ fn check_service_status_in_zuul(
     }
 
     pb.finish_with_message("done");
+    sleep(Duration::from_secs(10));
 }
 
 fn check_service_started_in_nacos(
