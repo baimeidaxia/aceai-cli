@@ -155,15 +155,14 @@ fn deploy_docker(
         &server.ip,
         &server.account,
         &server.password,
-        &"pwd".to_string(),
-//        &format!(
-//            "cd {}; docker compose -f {} pull {}; docker compose -f {} up -d {}",
-//            server.docker_compose_path,
-//            docker_service_config.yml,
-//            docker_service_config.name,
-//            docker_service_config.yml,
-//            docker_service_config.name
-//        ),
+        &format!(
+            "cd {}; docker compose -f {} pull {}; docker compose -f {} up -d {}",
+            server.docker_compose_path,
+            docker_service_config.yml,
+            docker_service_config.name,
+            docker_service_config.yml,
+            docker_service_config.name
+        ),
         &pb,
     );
 
