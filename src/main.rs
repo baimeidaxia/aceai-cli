@@ -1,10 +1,8 @@
-use lib::conf;
-
 mod lib;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     log4rs::init_file("log4rs.yaml", Default::default()).unwrap();
-    let _ = conf::load()?;
+    let _ = lib::conf::init();
     let cmd = lib::cmd::init();
     let matches = cmd.get_matches();
     match matches.subcommand() {

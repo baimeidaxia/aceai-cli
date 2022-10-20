@@ -1,3 +1,10 @@
 name: jxp
 servers:
-  - {ip: "192.168.0.102", account: "root", password: "123321", docker_compose_path: "/home/docker-compose"}
+  - {
+    ip: "192.168.0.102",
+    account: "root",
+    password: "123321",
+    docker_compose_path: "/home/docker-compose"
+  }
+nacos_url: "http://localhost:8848"
+zuul_url: "http://localhost:9000"

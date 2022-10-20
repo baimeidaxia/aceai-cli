@@ -3,7 +3,8 @@ appenders:
   stdout:
     kind: console
     encoder:
-      pattern: "{d(%Y-%m-%d %H:%M:%S)} {h({l})} {M}[{T}-{I}] - {m}{n}"
+      pattern: "{d(%H:%M:%S)} {m}{n}"
+#       pattern: "{d(%Y-%m-%d %H:%M:%S)} {h({l}):5} {M:35}[{T}] - {m}{n}"
 
 root:
   level: warn
@@ -11,5 +12,5 @@ root:
     - stdout
 
 loggers:
-  aceai_dp_cli:
+  aceai_cli:
     level: info
